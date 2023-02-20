@@ -1,7 +1,7 @@
-from meal_class import Meal
-from meal_class import Ingridients
-from meal_class import Options
-from meal_class import IngredientsInfo
+from model_classes import Meal
+from model_classes import Ingridients
+from model_classes import Options
+from model_classes import IngredientsInfo
 
 json_raw_data ={
   "meals": [
@@ -634,9 +634,36 @@ class Utils:
         ingredientsInfo_obj_list.append(ingredientInfo_obj)
     return ingredientsInfo_obj_list
 
-ingredientsInfo_obj_list=Utils.parse_ingredients_info(ingredients_info_list_dict)
 
-print(ingredientsInfo_obj_list[5].options[1].name)
+
+
+
+ingredientsInfo_obj_list=Utils.parse_ingredients_info(ingredients_info_list_dict)
+meals_obj_list=Utils.parse_meals(meal_list_dict)
+
+print("***********************   MEALS INFO  **************************************")
+
+for i in meal_list_dict:
+   print(i)
+   print("\n\n")
+
+print("\n\n") 
+
+print("***********************   INGREDIENTS INFO   **************************************")
+print("\n\n")
+for i in ingredients_info_list_dict:
+   print(i)
+   print("\n\n") 
+  
+print("***********************   INGREDIENTS asasddINFO   **************************************")
+print("\n\n")
+for i in ingredientsInfo_obj_list:
+  if('vegan' in i.groups):
+     print(i.name)
+
+
+       
+
 
 
 

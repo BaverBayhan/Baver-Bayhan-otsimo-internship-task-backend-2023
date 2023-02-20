@@ -636,31 +636,64 @@ class Utils:
 
 
 
-
+  def list_meals(is_vegan,is_vegetarian):
+      if(is_vegan):  
+        vegan_meals_list=[]
+        vegan_ingredients_list = []
+        for ingredientInfo_obj in ingredientsInfo_obj_list:
+            if('vegan' in ingredientInfo_obj.groups):
+                vegan_ingredients_list.append(ingredientInfo_obj.name)
+        for meal in meals_obj_list:
+            flag=True
+            for ingredient in meal.ingredients:
+                if(ingredient.name not in vegan_ingredients_list):
+                    flag=False
+                    break
+            if(flag):
+                vegan_meals_list.append(meal)  
+        return vegan_meals_list
+      
+      elif(is_vegetarian):
+        vegetarian_meals_list=[]
+        vegetarian_ingredients_list = []
+        for ingredientInfo_obj in ingredientsInfo_obj_list:
+            if('vegetarian' in ingredientInfo_obj.groups):
+                vegetarian_ingredients_list.append(ingredientInfo_obj.name)
+        for meal in meals_obj_list:
+            flag=True
+            for ingredient in meal.ingredients:
+                if(ingredient.name not in vegetarian_ingredients_list):
+                    flag=False
+                    break
+            if(flag):
+                vegetarian_meals_list.append(meal)
+            
+        return vegetarian_meals_list
+      else:
+          return meals_obj_list
+  def obj_to_dict(meals):
+    dict_list = []
+    for meal in meals:
+      meal_dict=meal.__dict__
+      for ingredient in meal_dict["_ingredients"]:
+        meal_dict["_ingredients"]=ingredient.__dict__
+      dict_list.append(meal_dict)
+    return dict_list
 
 ingredientsInfo_obj_list=Utils.parse_ingredients_info(ingredients_info_list_dict)
 meals_obj_list=Utils.parse_meals(meal_list_dict)
 
-print("***********************   MEALS INFO  **************************************")
 
-for i in meal_list_dict:
-   print(i)
-   print("\n\n")
 
-print("\n\n") 
+meals_list = Utils.list_meals(False,False)
 
-print("***********************   INGREDIENTS INFO   **************************************")
-print("\n\n")
-for i in ingredients_info_list_dict:
-   print(i)
-   print("\n\n") 
-  
-print("***********************   INGREDIENTS asasddINFO   **************************************")
-print("\n\n")
-for i in ingredientsInfo_obj_list:
-  if('vegan' in i.groups):
-     print(i.name)
+            
 
+
+dict_list = Utils.obj_to_dict(meals_list)
+
+for i in dict_list:
+    print(i,"\n")
 
        
 

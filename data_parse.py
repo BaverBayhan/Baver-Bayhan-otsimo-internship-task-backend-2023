@@ -2,610 +2,19 @@ from model_classes import Meal
 from model_classes import Ingridients
 from model_classes import Options
 from model_classes import IngredientsInfo
+import random
+import json
 
-json_raw_data ={
-  "meals": [
-    {
-      "id": 1,
-      "name": "Rice and chicken bowl",
-      "ingredients": [
-        { "name": "Rice", "quantity": 120, "quantity_type": "gram" },
-        { "name": "Chicken", "quantity": 85, "quantity_type": "gram" }
-      ]
-    },
-    {
-      "id": 2,
-      "name": "Pasta with marinara sauce and vegetables",
-      "ingredients": [
-        { "name": "Pasta", "quantity": 115, "quantity_type": "gram" },
-        {
-          "name": "Marinara sauce",
-          "quantity": 120,
-          "quantity_type": "millilitre"
-        },
-        { "name": "Vegetables", "quantity": 240, "quantity_type": "gram" }
-      ]
-    },
-    {
-      "id": 3,
-      "name": "Grilled chicken with roasted vegetables",
-      "ingredients": [
-        { "name": "Chicken", "quantity": 85, "quantity_type": "gram" },
-        { "name": "Vegetables", "quantity": 240, "quantity_type": "gram" }
-      ]
-    },
-    {
-      "id": 4,
-      "name": "Beef stir-fry with rice",
-      "ingredients": [
-        { "name": "Beef", "quantity": 115, "quantity_type": "gram" },
-        { "name": "Rice", "quantity": 120, "quantity_type": "gram" },
-        { "name": "Vegetables", "quantity": 240, "quantity_type": "gram" }
-      ]
-    },
-    {
-      "id": 5,
-      "name": "Pork chops with mashed potatoes and gravy",
-      "ingredients": [
-        { "name": "Pork chops", "quantity": 115, "quantity_type": "gram" },
-        {
-          "name": "Mashed potatoes",
-          "quantity": 120,
-          "quantity_type": "gram"
-        },
-        { "name": "Gravy", "quantity": 120, "quantity_type": "millilitre" }
-      ]
-    },
-    {
-      "id": 6,
-      "name": "Grilled salmon with roasted asparagus",
-      "ingredients": [
-        { "name": "Salmon", "quantity": 85, "quantity_type": "gram" },
-        { "name": "Asparagus", "quantity": 240, "quantity_type": "gram" }
-      ]
-    },
-    {
-      "id": 7,
-      "name": "Shrimp scampi with linguine",
-      "ingredients": [
-        { "name": "Shrimp", "quantity": 115, "quantity_type": "gram" },
-        { "name": "Linguine", "quantity": 115, "quantity_type": "gram" },
-        { "name": "Butter", "quantity": 10, "quantity_type": "millilitre" },
-        { "name": "Garlic", "quantity": 10, "quantity_type": "gram" },
-        { "name": "White wine", "quantity": 60, "quantity_type": "millilitre" }
-      ]
-    },
-    {
-      "id": 8,
-      "name": "Vegetarian stir-fry with tofu",
-      "ingredients": [
-        { "name": "Tofu", "quantity": 115, "quantity_type": "gram" },
-        { "name": "Rice", "quantity": 120, "quantity_type": "gram" },
-        { "name": "Vegetables", "quantity": 240, "quantity_type": "gram" }
-      ]
-    },
-    {
-      "id": 9,
-      "name": "Fruit salad with mixed berries and yogurt",
-      "ingredients": [
-        { "name": "Mixed berries", "quantity": 240, "quantity_type": "gram" },
-        { "name": "Yogurt", "quantity": 120, "quantity_type": "millilitre" }
-      ]
-    }
-  ],
+json_raw_data=None
+with open('data.json','r') as f:
+  json_raw_data=json.load(f)
 
-  "ingredients": [
-    {
-      "name": "Rice",
-      "groups": ["vegan", "vegetarian"],
-      "options": [
-        {
-          "name": "Long grain white rice",
-          "quality": "high",
-          "price": 3,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Medium grain brown rice",
-          "quality": "medium",
-          "price": 2,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Quick cooking white rice",
-          "quality": "low",
-          "price": 1.5,
-          "per_amount": "kilogram"
-        }
-      ]
-    },
-    {
-      "name": "Pasta",
-      "groups": ["vegetarian"],
-      "options": [
-        {
-          "name": "Semolina pasta",
-          "quality": "high",
-          "price": 2,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Whole wheat pasta",
-          "quality": "medium",
-          "price": 1.5,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Enriched pasta",
-          "quality": "low",
-          "price": 1,
-          "per_amount": "kilogram"
-        }
-      ]
-    },
-    {
-      "name": "Chicken",
-      "groups": [],
-      "options": [
-        {
-          "name": "Organic, free-range chicken",
-          "quality": "high",
-          "price": 10,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Conventional chicken",
-          "quality": "medium",
-          "price": 7,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Frozen chicken",
-          "quality": "low",
-          "price": 4,
-          "per_amount": "kilogram"
-        }
-      ]
-    },
-    {
-      "name": "Beef",
-      "groups": [],
-      "options": [
-        {
-          "name": "Grass-fed beef",
-          "quality": "high",
-          "price": 16,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Grain-fed beef",
-          "quality": "medium",
-          "price": 12,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Processed beef",
-          "quality": "low",
-          "price": 8,
-          "per_amount": "kilogram"
-        }
-      ]
-    },
-    {
-      "name": "Pork",
-      "groups": [],
-      "options": [
-        {
-          "name": "Heritage breed pork",
-          "quality": "high",
-          "price": 12,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Conventional pork",
-          "quality": "medium",
-          "price": 9,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Processed pork",
-          "quality": "low",
-          "price": 6,
-          "per_amount": "kilogram"
-        }
-      ]
-    },
-    {
-      "name": "Salmon",
-      "groups": [],
-      "options": [
-        {
-          "name": "Wild-caught salmon",
-          "quality": "high",
-          "price": 24,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Farmed salmon",
-          "quality": "medium",
-          "price": 16,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Canned tuna",
-          "quality": "low",
-          "price": 8,
-          "per_amount": "kilogram"
-        }
-      ]
-    },
-    {
-      "name": "Shrimp",
-      "groups": [],
-      "options": [
-        {
-          "name": "Wild-caught shrimp",
-          "quality": "high",
-          "price": 20,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Farm-raised shrimp",
-          "quality": "medium",
-          "price": 15,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Frozen shrimp",
-          "quality": "low",
-          "price": 10,
-          "per_amount": "kilogram"
-        }
-      ]
-    },
-    {
-      "name": "Vegetables",
-      "groups": ["vegan", "vegetarian"],
-      "options": [
-        {
-          "name": "Fresh, organic vegetables",
-          "quality": "high",
-          "price": 8,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Fresh, conventional vegetables",
-          "quality": "medium",
-          "price": 5,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Frozen vegetables",
-          "quality": "low",
-          "price": 3,
-          "per_amount": "kilogram"
-        }
-      ]
-    },
-    {
-      "name": "Fruit",
-      "groups": ["vegan", "vegetarian"],
-      "options": [
-        {
-          "name": "Fresh, organic fruit",
-          "quality": "high",
-          "price": 6,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Fresh, conventional fruit",
-          "quality": "medium",
-          "price": 4,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Canned fruit",
-          "quality": "low",
-          "price": 2,
-          "per_amount": "kilogram"
-        }
-      ]
-    },
-    {
-      "name": "Dairy",
-      "groups": ["vegetarian"],
-      "options": [
-        {
-          "name": "Organic, grass-fed dairy",
-          "quality": "high",
-          "price": 16,
-          "per_amount": "litre"
-        },
-        {
-          "name": "Conventional dairy",
-          "quality": "medium",
-          "price": 8,
-          "per_amount": "litre"
-        },
-        {
-          "name": "Processed dairy",
-          "quality": "low",
-          "price": 4,
-          "per_amount": "litre"
-        }
-      ]
-    },
-    {
-      "name": "Marinara sauce",
-      "groups": ["vegan", "vegetarian"],
-      "options": [
-        {
-          "name": "Homemade marinara sauce",
-          "quality": "high",
-          "price": 20,
-          "per_amount": "litre"
-        },
-        {
-          "name": "Store-bought marinara sauce",
-          "quality": "medium",
-          "price": 12,
-          "per_amount": "litre"
-        },
-        {
-          "name": "Canned marinara sauce",
-          "quality": "low",
-          "price": 6,
-          "per_amount": "litre"
-        }
-      ]
-    },
-    {
-      "name": "Butter",
-      "groups": ["vegetarian"],
-      "options": [
-        {
-          "name": "Grass-fed butter",
-          "quality": "high",
-          "price": 12,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Conventional butter",
-          "quality": "medium",
-          "price": 8,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Margarine",
-          "quality": "low",
-          "price": 4,
-          "per_amount": "kilogram"
-        }
-      ]
-    },
-    {
-      "name": "Garlic",
-      "groups": ["vegan", "vegetarian"],
-      "options": [
-        {
-          "name": "Fresh, organic garlic",
-          "quality": "high",
-          "price": 6,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Fresh, conventional garlic",
-          "quality": "medium",
-          "price": 4,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Frozen garlic",
-          "quality": "low",
-          "price": 2,
-          "per_amount": "kilogram"
-        }
-      ]
-    },
-    {
-      "name": "White wine",
-      "groups": ["vegan", "vegetarian"],
-      "options": [
-        {
-          "name": "High-end white wine",
-          "quality": "high",
-          "price": 40,
-          "per_amount": "litre"
-        },
-        {
-          "name": "Mid-range white wine",
-          "quality": "medium",
-          "price": 30,
-          "per_amount": "litre"
-        },
-        {
-          "name": "Cheap white wine",
-          "quality": "low",
-          "price": 20,
-          "per_amount": "litre"
-        }
-      ]
-    },
-    {
-      "name": "Mashed potatoes",
-      "groups": ["vegan", "vegetarian"],
-      "options": [
-        {
-          "name": "Homemade mashed potatoes",
-          "quality": "high",
-          "price": 10,
-          "per_amount": "litre"
-        },
-        {
-          "name": "Store-bought mashed potatoes",
-          "quality": "medium",
-          "price": 7,
-          "per_amount": "litre"
-        },
-        {
-          "name": "Instant mashed potatoes",
-          "quality": "low",
-          "price": 4,
-          "per_amount": "litre"
-        }
-      ]
-    },
-    {
-      "name": "Gravy",
-      "groups": [],
-      "options": [
-        {
-          "name": "Homemade gravy",
-          "quality": "high",
-          "price": 10,
-          "per_amount": "litre"
-        },
-        {
-          "name": "Store-bought gravy",
-          "quality": "medium",
-          "price": 7,
-          "per_amount": "litre"
-        },
-        {
-          "name": "Instant gravy",
-          "quality": "low",
-          "price": 4,
-          "per_amount": "litre"
-        }
-      ]
-    },
-    {
-      "name": "Asparagus",
-      "groups": ["vegan", "vegetarian"],
-      "options": [
-        {
-          "name": "Fresh, organic asparagus",
-          "quality": "high",
-          "price": 8,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Fresh, conventional asparagus",
-          "quality": "medium",
-          "price": 5,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Frozen asparagus",
-          "quality": "low",
-          "price": 3,
-          "per_amount": "kilogram"
-        }
-      ]
-    },
-    {
-      "name": "Tofu",
-      "groups": ["vegan", "vegetarian"],
-      "options": [
-        {
-          "name": "High-quality tofu",
-          "quality": "high",
-          "price": 8,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Medium-quality tofu",
-          "quality": "medium",
-          "price": 6,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Low-quality tofu",
-          "quality": "low",
-          "price": 4,
-          "per_amount": "kilogram"
-        }
-      ]
-    },
-    {
-      "name": "Yogurt",
-      "groups": ["vegetarian"],
-      "options": [
-        {
-          "name": "Organic, grass-fed yogurt",
-          "quality": "high",
-          "price": 12,
-          "per_amount": "litre"
-        },
-        {
-          "name": "Conventional yogurt",
-          "quality": "medium",
-          "price": 8,
-          "per_amount": "litre"
-        },
-        {
-          "name": "Processed yogurt",
-          "quality": "low",
-          "price": 4,
-          "per_amount": "litre"
-        }
-      ]
-    },
-    {
-      "name": "Mixed berries",
-      "groups": ["vegan", "vegetarian"],
-      "options": [
-        {
-          "name": "Fresh, organic mixed berries",
-          "quality": "high",
-          "price": 12,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Fresh, conventional mixed berries",
-          "quality": "medium",
-          "price": 8,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Frozen mixed berries",
-          "quality": "low",
-          "price": 4,
-          "per_amount": "kilogram"
-        }
-      ]
-    },
-    {
-      "name": "Linguine",
-      "groups": ["vegetarian"],
-      "options": [
-        {
-          "name": "High-end linguine",
-          "quality": "high",
-          "price": 2,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Mid-range linguine",
-          "quality": "medium",
-          "price": 1.5,
-          "per_amount": "kilogram"
-        },
-        {
-          "name": "Cheap linguine",
-          "quality": "low",
-          "price": 1,
-          "per_amount": "kilogram"
-        }
-      ]
-    }
-  ]
-}
 
-meal_list_dict = json_raw_data["meals"]
-ingredients_info_list_dict = json_raw_data["ingredients"]
 
 class Utils:
+  meal_list_dict = json_raw_data["meals"]
+  ingredients_info_list_dict = json_raw_data["ingredients"]
+  
   def parse_meals(meal_list_dict):
       meal_obj_list = []
       for meal_data in meal_list_dict:
@@ -633,8 +42,6 @@ class Utils:
                                           ,option_obj_list)
         ingredientsInfo_obj_list.append(ingredientInfo_obj)
     return ingredientsInfo_obj_list
-
-
 
   def list_meals(is_vegan,is_vegetarian):
       if(is_vegan):  
@@ -671,31 +78,212 @@ class Utils:
         return vegetarian_meals_list
       else:
           return meals_obj_list
+  
   def obj_to_dict(meals):
-    dict_list = []
+    meal_dicts = []
     for meal in meals:
-      meal_dict=meal.__dict__
-      for ingredient in meal_dict["_ingredients"]:
-        meal_dict["_ingredients"]=ingredient.__dict__
-      dict_list.append(meal_dict)
-    return dict_list
+        ingredient_dicts = [ingredient.__dict__ for ingredient in meal.ingredients]
+        meal_dict = {
+            'id': meal.id,
+            'name': meal.name,
+            'ingredients': ingredient_dicts
+        }
+        meal_dicts.append(meal_dict)
+    return meal_dicts
 
-ingredientsInfo_obj_list=Utils.parse_ingredients_info(ingredients_info_list_dict)
-meals_obj_list=Utils.parse_meals(meal_list_dict)
+  def get_meal_by_id(id):
+    for meal in Utils.list_meals(False,False):
+      if(meal.id==id):
+        ingredient_info_list=[]
+        for ingredient in meal.ingredients:
+           for ingredient_info in Utils.ingredients_info_list_dict:
+              if(ingredient.name==ingredient_info["name"]):
+                ingredient_info_list.append(ingredient_info)
+        meal_dict={
+          'id':meal.id,
+          'name':meal.name,
+          'ingredients':ingredient_info_list
+        }
+        return meal_dict
 
+  def calculate_quality_score(ingredients_names,params):
+    quality_score=0
+    for ingredient in ingredients_names:
+      flag=True
+      for k,v in params.items():
+        if(ingredient==k):
+          flag=False
+          if(v[0]=='low'):
+            quality_score+=10
+          elif(v[0]=='medium'):
+            quality_score+=20
+          elif(v[0]=='high'):
+             quality_score+=30
+      if flag:
+         quality_score+=30
+    return quality_score/len(ingredients_names)
+  
+  def get_meal_option(quality_str,options):
+    for option in options:
+      if(option['quality']==quality_str):
+        return option
 
+  def get_modified_ingredients_list(meal_id,params):
+    meal=None
+    for M in meals_obj_list:
+      if(M.id==meal_id):
+        meal=M
+        break
+    ingredients_list=[]
+    for ingredient in meal.ingredients:
+      ingredients_list.append(ingredient.__dict__)
+    ingredients_info_list=[]
+    meal_with_ingredients_infos=Utils.get_meal_by_id(meal_id)
+    for ingredient_info in meal_with_ingredients_infos['ingredients']:
+      ingredients_info_list.append(ingredient_info)
+    ingredient_options_list=[]
+    for ingredient in ingredients_info_list:
+      flag=True
+      for key,value in params.items():
+        if ingredient['name']==key:
+          ingredient_options_list.append(Utils.get_meal_option(value[0],ingredient['options']))
+          flag=False
+      if flag:
+        ingredient_options_list.append(Utils.get_meal_option('high',ingredient['options']))
+    for i in range(len(ingredients_list)):
+      ingredients_list[i]['price']= ingredient_options_list[i]['price']
+      ingredients_list[i]['quality']=ingredient_options_list[i]['quality']
+    return ingredients_list
+  
+  def calculate_price(meal_id,params):
+    modified_ingredients_list=Utils.get_modified_ingredients_list(meal_id,params)
+    price_of_meal=0
+    for ingredient in modified_ingredients_list:
+      price_of_meal+=(ingredient['quantity']/1000)*ingredient['price']
+      if(ingredient['quality']=='low'):
+        price_of_meal+=0.10
+      elif(ingredient['quality']=='medium'):
+        price_of_meal+=0.05
+    return price_of_meal
+
+  def update_helper_list(helper_list):
+    return sorted(helper_list*3)
+  
+  def generate_params_list(params_list):
+    value_list=[]
+    for elem in params_list:
+      value_list.append(list(elem.values()))
+
+    helper_list=[0,1,2]
+    speed=3
+    for i in range(len(value_list[0])):
+      k=len(value_list[0])-i-1
+      for j in range(len(value_list)):
+        value_list[j][k]+=helper_list[j%speed]
+      helper_list=Utils.update_helper_list(helper_list)
+      speed*=3
+    for i in range(len(value_list[0])):
+      k=len(value_list[0])-i-1
+      for j in range(len(value_list)):
+        if(value_list[j][i]==1):
+          value_list[j][i]='low'
+        elif(value_list[j][i]==2):
+          value_list[j][i]='medium'
+        elif(value_list[j][i]==3):
+          value_list[j][i]='high'
+
+    return value_list
+          
+  def generate_possible_ingredients(meal_id):
+    meal=None
+    for M in Utils.meal_list_dict:
+      if(M['id']==meal_id):
+        meal=M
+    params_list = []
+    for it in range(3**len(meal['ingredients'])):
+      param={}
+      for ing in meal['ingredients']:
+        param[ing['name']]=1
+      params_list.append(param)
+
+    qualities_list=Utils.generate_params_list(params_list)
+    
+    for i in range(len(qualities_list)):
+      dict1=params_list[i]
+      list1=qualities_list[i]
+      keys = list(dict1.keys())  
+      for i, key in enumerate(keys):
+        dict1[key] = list1[i]
+    for params in params_list:
+      for k,v in params.items():
+        params[k]=[v]
+    return params_list
+  
+  def get_shortened_ingredients_list(ingredient):
+    shortened_ingredients_list=[]
+    for key,value in ingredient.items():
+      name_of_specific_ingredient=None
+      for ingredient_info in Utils.ingredients_info_list_dict:
+        if(key==ingredient_info['name']):
+           for option in ingredient_info['options']:
+              if(option['quality']==value[0]):
+                name_of_specific_ingredient=option['name']
+      dict_={
+        'name':name_of_specific_ingredient,
+        'quality':value[0]       
+      }
+      shortened_ingredients_list.append(dict_)
+    return shortened_ingredients_list
+
+  def generate_versions_of_meal(meal_id):
+    name=Utils.get_meal_by_id(meal_id)['name']
+    possible_ingredients=Utils.generate_possible_ingredients(meal_id)
+    versions_list=[]
+    for ingredient in possible_ingredients:
+      price=format(Utils.calculate_price(meal_id,ingredient),'.2f')
+      quality=format(Utils.calculate_quality_score(list(ingredient.keys()),ingredient),'.1f')
+      shortened_ingredients_list=Utils.get_shortened_ingredients_list(ingredient)
+      _dict={
+        'id':meal_id,
+        'name':name,
+        'price':price,
+        'quality_score':quality,
+        'ingredients':shortened_ingredients_list
+      }
+      versions_list.append(_dict)
+    return versions_list
+
+  def all_possible_meals(all_meal_ids):
+    all_possible_meals_list=[]
+    for meal_id in all_meal_ids:
+      possible_meals=Utils.generate_versions_of_meal(meal_id)
+      for meal in possible_meals:
+        all_possible_meals_list.append(meal)
+    return all_possible_meals_list
+
+  def feeling_lucky_impl(all_meal_ids,budget):
+    all_possible_meals_list=Utils.all_possible_meals(all_meal_ids)
+    filtered_meals=[]
+    for meal in all_possible_meals_list:
+      if(budget>float(meal['price']) or budget==float(meal['price'])):
+        filtered_meals.append(meal)
+    rand_num=random.randint(0,len(filtered_meals)-1)
+    return filtered_meals[rand_num]
+    
+    
+ingredientsInfo_obj_list=Utils.parse_ingredients_info(Utils.ingredients_info_list_dict)
+
+meals_obj_list=Utils.parse_meals(Utils.meal_list_dict)
 
 meals_list = Utils.list_meals(False,False)
 
-            
-
-
 dict_list = Utils.obj_to_dict(meals_list)
+     
 
-for i in dict_list:
-    print(i,"\n")
 
-       
+
+
+
 
 
 

@@ -29,8 +29,17 @@ class RestaurantAPIRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(response_json.encode())
 
+        elif parsed_url.path=='/search':
+            params=parse_qs(parsed_url.query)
+            response=json.dumps(Utils.keyword_search(params['query'][0]))
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(response.encode())
+
     def do_POST(self):
         parsed_url = urlparse(self.path)
+
         if parsed_url.path == '/quality':
             params = parse_qs(parsed_url.query)
             meal_ingredients = Utils.get_meal_by_id(int(params['meal_id'][0]))['ingredients']
@@ -43,6 +52,7 @@ class RestaurantAPIRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             response = {'quality': quality_score}
             self.wfile.write(json.dumps(response).encode('utf-8'))
+
         elif parsed_url.path=='/price':
             params = parse_qs(parsed_url.query)
             price = Utils.calculate_price(int(params['meal_id'][0]),params)
@@ -51,6 +61,7 @@ class RestaurantAPIRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             response = {'price': price}
             self.wfile.write(json.dumps(response).encode('utf-8'))
+
         elif parsed_url.path=='/random':
             params=parse_qs(parsed_url.query)
             meal_ids_list=[]
@@ -61,6 +72,29 @@ class RestaurantAPIRequestHandler(BaseHTTPRequestHandler):
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps(response).encode('utf-8'))
+
+        elif parsed_url.path=='/findHeighest':
+            params=parse_qs(parsed_url.query)
+            response=json.dumps(Utils.find_heighest_quality(
+                float(params['budget'][0]),
+                params['is_vegetarian'][0]=='true',
+                params['is_vegan'][0]=='true'))
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(response.encode('utf-8'))
+
+        elif parsed_url.path=='/findHighestOfMeal':
+            params=parse_qs(parsed_url.query)
+            response=json.dumps(Utils.find_heighst_quality_version(
+                int(params['meal_id'][0]),
+                float(params['budget'][0])
+            ))
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(response.encode('utf-8'))        
+
             
 
 

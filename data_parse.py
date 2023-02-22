@@ -9,25 +9,23 @@ json_raw_data=None
 with open('data.json','r') as f:
   json_raw_data=json.load(f)
 
-
-
 class Utils:
   meal_list_dict = json_raw_data["meals"]
   ingredients_info_list_dict = json_raw_data["ingredients"]
   
   def parse_meals(meal_list_dict):
-      meal_obj_list = []
-      for meal_data in meal_list_dict:
-          ingredients_list = meal_data["ingredients"]
-          ingredients_obj_list=[]
-          for ingredient in ingredients_list:
-              ingredient_obj= Ingridients(ingredient["name"],
-                                          ingredient["quantity"],
-                                          ingredient["quantity_type"])
-              ingredients_obj_list.append(ingredient_obj)
-          meal_obj= Meal(meal_data["id"],meal_data["name"],ingredients_obj_list)
-          meal_obj_list.append(meal_obj)
-      return meal_obj_list
+    meal_obj_list = []
+    for meal_data in meal_list_dict:
+        ingredients_list = meal_data["ingredients"]
+        ingredients_obj_list=[]
+        for ingredient in ingredients_list:
+            ingredient_obj= Ingridients(ingredient["name"],
+                                        ingredient["quantity"],
+                                        ingredient["quantity_type"])
+            ingredients_obj_list.append(ingredient_obj)
+        meal_obj= Meal(meal_data["id"],meal_data["name"],ingredients_obj_list)
+        meal_obj_list.append(meal_obj)
+    return meal_obj_list
 
   def parse_ingredients_info(ingredients_info_list_dict):
     ingredientsInfo_obj_list=[]
@@ -270,14 +268,58 @@ class Utils:
     rand_num=random.randint(0,len(filtered_meals)-1)
     return filtered_meals[rand_num]
     
+  def keyword_search(query):
+    for meal in Utils.meal_list_dict:
+      if(query.lower() in meal['name'].lower()):
+        ingredients=[]
+        for ingredient in meal['ingredients']:
+          ingredients.append(ingredient['name'])
+        return {
+          'id':meal['id'],
+          'name':meal['name'],
+          'ingredients':ingredients
+        }
+    return None
     
+  def find_heighest_quality(budget,is_vegetarian,is_vegan):
+    final_meal=None
+    filtered_meals=Utils.list_meals(is_vegetarian,is_vegan)
+    quality=0
+    meal_ids=[]
+    for meal in filtered_meals:
+      meal_ids.append(meal.id)
+    possible_meals=Utils.all_possible_meals(meal_ids)
+    for filter_meal in possible_meals:
+      if(budget>float(filter_meal['price']) or budget==float(filter_meal['price'])):
+        if(float(filter_meal['quality_score'])>quality):
+          quality=float(filter_meal['quality_score'])
+          final_meal=filter_meal
+    return final_meal
+        
+  def find_heighst_quality_version(meal_id,budget):
+    final_meal=None
+    versions_of_meal_list=Utils.generate_versions_of_meal(meal_id)
+    quality=0
+    for version in versions_of_meal_list:
+      if(budget>float(version['price']) or budget==float(version['price'])):
+        if(float(version['quality_score'])>quality):
+          quality=float(version['quality_score'])
+          final_meal=version
+    return final_meal
+
+
+      
+
+
 ingredientsInfo_obj_list=Utils.parse_ingredients_info(Utils.ingredients_info_list_dict)
 
 meals_obj_list=Utils.parse_meals(Utils.meal_list_dict)
 
 meals_list = Utils.list_meals(False,False)
 
-dict_list = Utils.obj_to_dict(meals_list)
+
+
+
      
 
 

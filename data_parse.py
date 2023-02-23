@@ -265,8 +265,11 @@ class Utils:
     for meal in all_possible_meals_list:
       if(budget>float(meal['price']) or budget==float(meal['price'])):
         filtered_meals.append(meal)
-    rand_num=random.randint(0,len(filtered_meals)-1)
-    return filtered_meals[rand_num]
+    if len(filtered_meals) != 0:
+      rand_num=random.randint(0,len(filtered_meals)-1)
+      return filtered_meals[rand_num]
+    else:
+      return None
     
   def keyword_search(query):
     for meal in Utils.meal_list_dict:
@@ -296,7 +299,7 @@ class Utils:
           final_meal=filter_meal
     return final_meal
         
-  def find_heighst_quality_version(meal_id,budget):
+  def find_heighest_quality_version(meal_id,budget):
     final_meal=None
     versions_of_meal_list=Utils.generate_versions_of_meal(meal_id)
     quality=0
@@ -308,15 +311,11 @@ class Utils:
     return final_meal
 
 
-      
-
-
 ingredientsInfo_obj_list=Utils.parse_ingredients_info(Utils.ingredients_info_list_dict)
 
 meals_obj_list=Utils.parse_meals(Utils.meal_list_dict)
 
 meals_list = Utils.list_meals(False,False)
-
 
 
 

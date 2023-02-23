@@ -7,8 +7,10 @@ import json
 
 json_raw_data=None
 with open('data.json','r') as f:
-  json_raw_data=json.load(f)
+  json_raw_data=json.load(f) 
 
+
+# Utility class for parsing processing data
 class Utils:
   meal_list_dict = json_raw_data["meals"]
   ingredients_info_list_dict = json_raw_data["ingredients"]
@@ -88,7 +90,7 @@ class Utils:
         }
         meal_dicts.append(meal_dict)
     return meal_dicts
-
+  
   def get_meal_by_id(id):
     for meal in Utils.list_meals(False,False):
       if(meal.id==id):

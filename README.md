@@ -1,4 +1,4 @@
-# otsimo_question
+# Otsimo Backend Internship Task
 
 In this repo I have created Transparent Restaurant Backend REST api. All endpoints including bonusses has been implemented. URLs, HTTP methods and
 parameters are same with the task in Gist for all endpoints.

@@ -132,7 +132,7 @@ class RestaurantAPIRequestHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(response_json.encode())
 
-        elif parsed_url.path=='/findHeighest':
+        elif parsed_url.path=='/findHighest':
             params=parse_qs(parsed_url.query)
             is_vegetarian='false'
             is_vegan='false'

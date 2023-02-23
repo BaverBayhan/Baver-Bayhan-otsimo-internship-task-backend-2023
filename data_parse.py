@@ -310,7 +310,7 @@ class Utils:
           final_meal=version
     return final_meal
 
-
+  
 ingredientsInfo_obj_list=Utils.parse_ingredients_info(Utils.ingredients_info_list_dict)
 
 meals_obj_list=Utils.parse_meals(Utils.meal_list_dict)

@@ -3,7 +3,7 @@
 In this repo I have created Transparent Restaurant Backend REST api. All endpoints including bonusses has been implemented. URLs, HTTP methods and
 parameters are below.
 
-To test the api put the data in "data.json" (default content of file is the dataset in Gist task) and run  API.py file . Server will start in http://localhost:8080
+To test the api put the data in "data.json" (default content of file is the dataset in Gist task) and run  "API.py" file . Server will start in http://localhost:8080
 
 <-- ! --> There is a typo in the original dataset in Gist. The "Pork Chops" mentioned in the ingredients list of meal with id 5 is listed as "Pork" in the ingredients list below of meals. So, I changed "Pork Chops" to "Pork" in the ingredients list below meals.
 
